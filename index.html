@@ -1,18 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MovieLog</title>
+   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <p>Welcome to MovieLog! This is a simple web application to keep track of your movie collection and watchlist. 
-        You can add movies, mark them as watched, and organize them by genre. Start building your movie library today!
-    </p>
-    <ul>
-        <li>Movie 1</li>
-        <li>Movie 2</li>
-        <li>Movie 3</li>
-    </ul>
-</body> 
+    <header>
+        <nav>
+            <ul>
+                <li class = "logo"><a href="index.html">My Journal</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="pages/My_Watchlist.html">My Watchlist</a></li>
+                <li><a href="pages/My_Library.html">My Library</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class = "LatestMovies">
+        <p>Check out the latest movies  </p>
+        <div> Latest Movies </div>
+        <div> Recent Books  </div>
+    </section>
+    <section class = "UserList">
+        <div>My Watchlist  </div>
+        <div>My Readinglist  </div>
+    </section>
+    <footer>footer</footer>
+</body>
 </html>
