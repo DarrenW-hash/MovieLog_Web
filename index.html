@@ -4,31 +4,313 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Story+Script&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MovieLog</title>
    <link rel="stylesheet" href="styles.css">
 </head>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const bookCollection = document.getElementById("collectionBooks");
+    const movieCollection = document.getElementById("collectionMovies");
+
+    const bookList = document.querySelector(".featherbox_Books .book-list");
+    const movieList = document.querySelector(".movie-section .movie-list");
+
+    // Helper: prevent duplicates
+    function isDuplicate(collectionList, title) {
+        return Array.from(collectionList.querySelectorAll(".book-title, .movie-title"))
+            .some(el => el.textContent === title);
+    }
+
+    // ===== Function to create a book list item =====
+    function createBookItem(title, author) {
+        const li = document.createElement("li");
+        li.innerHTML = `
+            <div class="book-info">
+                <i class="fa-solid fa-book"></i>
+                <div>
+                    <span class="book-title">${title}</span>
+                    <span class="book-author">${author}</span>
+                </div>
+            </div>
+            <div class="book-actions">
+                <button class="icon-btn view">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+                <button class="icon-btn add"><i class="fa-solid fa-plus"></i></button>
+                <button class="icon-btn delete">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+        `;
+
+        // Delete button
+        li.querySelector(".delete").addEventListener("click", () => li.remove());
+
+        // Add to collection button
+        li.querySelector(".icon-btn.add").addEventListener("click", function() {
+            if (isDuplicate(bookCollection, title)) {
+                alert(`${title} is already in your collection!`);
+                return;
+            }
+
+            const collectionItem = createBookItem(title, author);
+            // Remove the add button in collection
+            collectionItem.querySelector(".icon-btn.add").remove();
+            bookCollection.appendChild(collectionItem);
+        });
+
+        return li;
+    }
+
+    // ===== Function to create a movie list item =====
+    function createMovieItem(title, meta) {
+        const li = document.createElement("li");
+        li.innerHTML = `
+            <div class="movie-info">
+                <i class="fa-solid fa-film"></i>
+                <div>
+                    <span class="movie-title">${title}</span>
+                    <span class="movie-meta">${meta}</span>
+                </div>
+            </div>
+            <div class="movie-actions">
+                <button class="icon-btn view">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+                <button class="icon-btn add"><i class="fa-solid fa-plus"></i></button>
+                <button class="icon-btn delete">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+        `;
+
+        // Delete button
+        li.querySelector(".delete").addEventListener("click", () => li.remove());
+
+        // Add to collection button
+        li.querySelector(".icon-btn.add").addEventListener("click", function() {
+            if (isDuplicate(movieCollection, title)) {
+                alert(`${title} is already in your collection!`);
+                return;
+            }
+
+            const collectionItem = createMovieItem(title, meta);
+            // Remove add button in collection
+            collectionItem.querySelector(".icon-btn.add").remove();
+            movieCollection.appendChild(collectionItem);
+        });
+
+        return li;
+    }
+
+    // ===== Add book from input =====
+    document.getElementById("addBookBtn").addEventListener("click", function() {
+        const titleInput = document.getElementById("newBookTitle");
+        const authorInput = document.getElementById("newBookAuthor");
+
+        const title = titleInput.value.trim();
+        const author = authorInput.value.trim();
+        if (!title || !author) return alert("Enter both title and author.");
+
+        const li = createBookItem(title, author);
+        bookList.appendChild(li);
+
+        titleInput.value = "";
+        authorInput.value = "";
+    });
+
+    // ===== Add movie from input =====
+    document.getElementById("addMovieBtn").addEventListener("click", function() {
+        const titleInput = document.getElementById("newMovieTitle");
+        const metaInput = document.getElementById("newMovieMeta");
+
+        const title = titleInput.value.trim();
+        const meta = metaInput.value.trim();
+        if (!title || !meta) return alert("Enter both title and year/genre.");
+
+        const li = createMovieItem(title, meta);
+        movieList.appendChild(li);
+
+        titleInput.value = "";
+        metaInput.value = "";
+    });
+
+    // ===== Initialize existing items =====
+    // Attach add-to-collection to existing books
+    document.querySelectorAll(".featherbox_Books .book-list li").forEach(li => {
+        const title = li.querySelector(".book-title").textContent;
+        const author = li.querySelector(".book-author").textContent;
+
+        li.querySelector(".icon-btn.add").addEventListener("click", function() {
+            if (isDuplicate(bookCollection, title)) {
+                alert(`${title} is already in your collection!`);
+                return;
+            }
+
+            const collectionItem = createBookItem(title, author);
+            collectionItem.querySelector(".icon-btn.add").remove();
+            bookCollection.appendChild(collectionItem);
+        });
+
+        li.querySelector(".delete").addEventListener("click", () => li.remove());
+    });
+
+    // Attach add-to-collection to existing movies
+    document.querySelectorAll(".movie-section .movie-list li").forEach(li => {
+        const title = li.querySelector(".movie-title").textContent;
+        const meta = li.querySelector(".movie-meta").textContent;
+
+        li.querySelector(".icon-btn.add").addEventListener("click", function() {
+            if (isDuplicate(movieCollection, title)) {
+                alert(`${title} is already in your collection!`);
+                return;
+            }
+
+            const collectionItem = createMovieItem(title, meta);
+            collectionItem.querySelector(".icon-btn.add").remove();
+            movieCollection.appendChild(collectionItem);
+        });
+
+        li.querySelector(".delete").addEventListener("click", () => li.remove());
+    });
+
+});
+</script>
 <body>
+    
     <header>
-        <nav>
-            <ul>
-                <li class = "logo"><a href="index.html">My Journal</a></li>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="pages/My_Watchlist.html">My Watchlist</a></li>
-                <li><a href="pages/My_Library.html">My Library</a></li>
-            </ul>
-        </nav>
+        <h1>My Book and Movie Log</h1>
     </header>
-    <section class = "LatestMovies">
-        <p>Check out movies  </p>
-        <div> Latest Movies </div>
-        <div> Recent Books  </div>
+    
+    <h1 class="intro">Welcome to My Journey</h1>
+    
+    <p class="Welcoming">The Goal: design and implement a book/movie log interface using HTML,
+            CSS, and JavaScript. At its core, the system manages a list of items and allows users to interact
+            with that list in meaningful ways.</p>
+    
+    <section class="featherbox_Books">
+        <div class="book-list-card">
+        <h2 class="list-title">Currently Reading</h2>
+        <div class="add-book-form">
+              <input type="text" id="newBookTitle" placeholder="Book Title">
+              <input type="text" id="newBookAuthor" placeholder="Author">
+         <button id="addBookBtn">Add Book</button>
+</div>
+        <ul class="book-list">
+            <li>
+                <div class="book-info">
+                    <i class="fa-solid fa-book"></i>
+                    <div>
+                        <span class="book-title">The Great Gatsby</span>
+                        <span class="book-author">F. Scott Fitzgerald</span>
+                    </div>
+                </div>
+
+                <div class="book-actions">
+                        <button class="icon-btn view">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    <button class="icon-btn add"><i class="fa-solid fa-plus"></i></button>
+                    <button class="icon-btn delete"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </li>
+
+            <li>
+                <div class="book-info">
+                    <i class="fa-solid fa-book"></i>
+                    <div>
+                        <span class="book-title">The Hobbit</span>
+                        <span class="book-author">J.R.R. Tolkien</span>
+                    </div>
+                </div>
+
+                <div class="book-actions">
+                    <button class="icon-btn view">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    <button class="icon-btn add"><i class="fa-solid fa-plus"></i></button>
+                    <button class="icon-btn delete"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </li>
+        </ul>
+    </div>
     </section>
-    <section class = "UserList">
-        <div>My Watchlist  </div>
-        <div>My Readinglist  </div>
-    </section>
+    <section class="movie-section">
+    <div class="movie-list-card">
+        <h2 class="list-title">My Watchlist</h2>
+        <div class="add-movie-form">
+    <input type="text" id="newMovieTitle" placeholder="Movie Title">
+    <input type="text" id="newMovieMeta" placeholder="Year / Genre">
+    <button id="addMovieBtn">Add Movie</button>
+</div>
+        <ul class="movie-list">
+            <li>
+                <div class="movie-info">
+                    <i class="fa-solid fa-film"></i>
+                    <div>
+                        <span class="movie-title">Inception</span>
+                        <span class="movie-meta">2010 • Sci-Fi</span>
+                    </div>
+                </div>
+
+                <div class="movie-actions">
+                    <button class="icon-btn view">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                    <button class="icon-btn add">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <button class="icon-btn delete">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </li>
+
+            <li>
+                <div class="movie-info">
+                    <i class="fa-solid fa-film"></i>
+                    <div>
+                        <span class="movie-title">Interstellar</span>
+                        <span class="movie-meta">2014 • Adventure</span>
+                    </div>
+                </div>
+
+                <div class="movie-actions">
+                    <button class="icon-btn view">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                    <button class="icon-btn add">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <button class="icon-btn delete">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
+<section class="collection-section">
+    <div class="book-list-card">
+        <h2 class="list-title">My Book Collection</h2>
+        <ul class="book-list" id="collectionBooks"></ul>
+    </div>
+</section>
+
+<section class="collection-section">
+    <div class="movie-list-card">
+        <h2 class="list-title">My Movie Collection</h2>
+        <ul class="movie-list" id="collectionMovies"></ul>
+    </div>
+</section>
+    
     <footer>footer</footer>
 </body>
 </html>
