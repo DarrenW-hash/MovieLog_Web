@@ -1,0 +1,464 @@
+/* =========================
+   GLOBAL FONT
+========================= */
+body {
+    margin: 0;
+    font-family: 'Story Script', 'Oswald', sans-serif;
+}
+
+/* =========================
+   HEADER
+========================= */
+header {
+    background-color: black;
+    background-image: url('images/books-v-movies.jpg');
+    background-size: cover;         
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 500px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: white;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+li {
+    margin-right: 20px;
+}
+
+li a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+}
+
+/* =========================
+   INTRO TITLE
+========================= */
+h1.intro {
+    background-color: white;
+    color: black;
+    font-size: 40px;
+    text-align: center;
+    padding: 30px 0;
+    margin: 0;
+}
+
+/* =========================
+   WELCOMING PARAGRAPH
+========================= */
+p.Welcoming {
+    background-color: white;
+    color: black;
+    font-size: 20px;
+    text-align: center;
+    padding: 40px;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+section {
+    color: blue;
+    padding: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 40px;
+}
+
+/* Latest Movies Section */
+section.LatestMovies div {
+    color: green;
+    margin: auto;
+}
+
+/* User List Section */
+section.UserList div {
+    color: red;
+    margin: auto;
+}
+
+/* Book description text */
+section.featherbox_Books p {
+    color: black;
+    max-width: 500px;
+    align-self: center;
+}
+
+/* =========================
+   FOOTER
+========================= */
+footer {
+    background-color: black;
+    padding: 40px;
+    color: white;
+    text-align: center;
+}
+
+.add-button {
+    background-color: #111;              /* dark sleek base */
+    color: white;
+    font-family: 'Story Script', 'Oswald', sans-serif;
+    font-size: 16px;
+
+    padding: 12px 24px;
+    border: none;
+    border-radius: 30px;                 /* rounded pill shape */
+
+    cursor: pointer;
+    transition: all 0.3s ease;           /* smooth animation */
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover effect */
+.add-button:hover {
+    background-color: #2ecc71;           /* soft green highlight */
+    transform: translateY(-3px);         /* lift effect */
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* Click effect */
+.add-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+/* =========================
+   BOOK LIST SECTION
+========================= */
+.featherbox_Books {
+    display: flex;
+    justify-content: center;
+    padding: 80px 20px;
+    background-color: #f4f4f4;
+}
+
+/* Card container */
+.book-list-card {
+    background-color: white;
+    width: 100%;
+    max-width: 600px;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Section title */
+.list-title {
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 28px;
+    text-align: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Book list */
+.book-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Each book item */
+.book-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    border-bottom: 1px solid #eee;
+    transition: background 0.3s ease;
+}
+
+/* Hover effect */
+.book-list li:hover {
+    background-color: #f9f9f9;
+}
+
+/* Book title */
+.book-title {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+/* Author styling */
+.book-author {
+    font-size: 14px;
+    color: #777;
+}
+
+/* Book list layout */
+.book-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10px;
+    border-bottom: 1px solid #eee;
+    transition: background 0.3s ease;
+}
+
+.book-list li:hover {
+    background-color: #f9f9f9;
+}
+
+/* Left side book info */
+.book-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.book-info i {
+    font-size: 20px;
+    color: #444;
+}
+
+/* Title + author stacked */
+.book-info div {
+    display: flex;
+    flex-direction: column;
+}
+
+.book-title {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.book-author {
+    font-size: 14px;
+    color: #777;
+}
+
+/* Action buttons */
+.book-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+/* Individual icon colors */
+.icon-btn.view:hover {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.icon-btn.add:hover {
+    background-color: #3498db;
+    color: white;
+}
+
+.icon-btn.delete:hover {
+    background-color: #e74c3c;
+    color: white;
+}
+
+/* =========================
+   MOVIE SECTION
+========================= */
+.movie-section {
+    display: flex;
+    justify-content: center;
+    padding: 80px 20px;
+    background-color: #111;   /* darker for cinematic feel */
+}
+
+/* Card container */
+.movie-list-card {
+    background-color: #1c1c1c;
+    width: 100%;
+    max-width: 700px;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    color: white;
+    align-items: center;
+}
+
+/* Movie list */
+.movie-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Each movie row */
+.movie-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10px;
+    border-bottom: 1px solid #333;
+    transition: background 0.3s ease;
+}
+
+/* Left side */
+.movie-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.movie-info i {
+    font-size: 22px;
+    color: #f1c40f;  /* gold film icon */
+}
+
+.movie-info div {
+    display: flex;
+    flex-direction: column; 
+}
+
+.movie-title {
+    font-weight: 600;
+    font-size: 18px;
+    color: black;
+}
+
+.movie-meta {
+    font-size: 14px;
+    color: black;
+}
+
+/* Actions */
+.movie-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.collection-section {
+    display: flex;
+    justify-content: center;
+    padding: 60px 20px;
+}
+
+.collection-section .book-list-card,
+.collection-section .movie-list-card {
+    width: 100%;
+    max-width: 600px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.collection-section .movie-list-card {
+    background-color: #1c1c1c;
+    color: white;
+}
+
+.collection-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.collection-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.collection-section li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+.add-book-form,
+.add-movie-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.add-book-form input,
+.add-movie-form input {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.add-book-form button,
+.add-movie-form button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #111;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.add-book-form button:hover,
+.add-movie-form button:hover {
+    background-color: #2ecc71;
+}
+@media (max-width: 600px) {
+    .book-list-card,
+    .movie-list-card {
+        padding: 15px;
+    }
+
+    .book-list li,
+    .movie-list li {
+        padding: 10px 5px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .book-actions,
+    .movie-actions {
+        margin-top: 5px;
+        gap: 5px;
+    }
+}
+/* Limit height and allow scrolling */
+.book-list,
+.movie-list {
+    max-height: 400px;       /* adjust based on your design */
+    overflow-y: auto;        /* scroll vertically if too many items */
+    padding-right: 10px;     /* optional, for scrollbar spacing */
+}
+
+/* Optional: nicer scrollbar for webkit browsers */
+.book-list::-webkit-scrollbar,
+.movie-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.book-list::-webkit-scrollbar-thumb,
+.movie-list::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 4px;
+}
