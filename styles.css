@@ -291,7 +291,7 @@ footer {
 
 /* Card container */
 .movie-list-card {
-    background-color: #1c1c1c;
+    background-color: gray;
     width: 100%;
     max-width: 700px;
     padding: 30px;
