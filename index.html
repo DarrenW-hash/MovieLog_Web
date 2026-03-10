@@ -1,326 +1,500 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Story+Script&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MovieLog</title>
-   <link rel="stylesheet" href="styles.css">
-</head>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    const bookCollection = document.getElementById("collectionBooks");
-    const movieCollection = document.getElementById("collectionMovies");
-
-    const bookList = document.querySelector(".featherbox_Books .book-list");
-    const movieList = document.querySelector(".movie-section .movie-list");
-
-    // Helper: prevent duplicates
-    function isDuplicate(collectionList, title) {
-        return Array.from(collectionList.querySelectorAll(".book-title, .movie-title"))
-            .some(el => el.textContent === title);
-    }
-
-    // ===== Function to create a book list item =====
-    function createBookItem(title, author) {
-        const li = document.createElement("li");
-        li.innerHTML = `
-            <div class="book-info">
-            <i class="fa-solid fa-book"></i>
-            <div>
-                <span class="book-title">${title}</span>
-                <span class="book-author">${author}</span>
-                <span class="status-label"></span>
-            </div>
-        </div>
-        <div class="book-actions">
-            <button class="icon-btn add"><i class="fa-solid fa-plus"></i></button>
-            <button class="icon-btn delete"><i class="fa-solid fa-trash"></i></button>
-        </div>
-        `;
-    li.querySelector(".delete").addEventListener("click", () => li.remove());
-
-    li.querySelector(".icon-btn.add").addEventListener("click", function() {
-        if (isDuplicate(bookCollection, title)) {
-            alert(`${title} is already in your collection!`);
-            return;
-        }
-
-        const collectionItem = createBookItem(title, author);
-        collectionItem.querySelector(".icon-btn.add").remove();
-
-        // --- ADD VIEW BUTTON BACK ONLY FOR COLLECTION ---
-        const viewBtn = document.createElement("button");
-        viewBtn.className = "icon-btn view";
-        viewBtn.innerHTML = '<i class="fa-solid fa-eye"></i>';
-        
-        viewBtn.addEventListener("click", () => {
-            const choice = prompt("Update Status:\n1. To Read\n2. Reading\n3. Completed");
-            const label = collectionItem.querySelector(".status-label");
-            if (choice === "1") { label.textContent = "• To Read"; label.style.color = "#f1c40f"; }
-            else if (choice === "2") { label.textContent = "• Reading"; label.style.color = "#3498db"; }
-            else if (choice === "3") { label.textContent = "• Completed"; label.style.color = "#2ecc71"; }
-        });
-
-        collectionItem.querySelector(".book-actions").prepend(viewBtn);
-        bookCollection.appendChild(collectionItem);
-    });
-
-    return li;
+/* =========================
+   GLOBAL FONT
+========================= */
+body {
+    margin: 0;
+    font-family: 'Story Script', 'Oswald', sans-serif;
 }
 
-    // ===== Function to create a movie list item =====
-    function createMovieItem(title, meta) {
-        const li = document.createElement("li");
-        li.innerHTML = `
-            <div class="movie-info">
-                <i class="fa-solid fa-film"></i>
-                <div>
-                    <span class="movie-title">${title}</span>
-                    <span class="movie-meta">${meta}</span>
-                    <span class="status-label"></span> </div>
-            </div>
-            <div class="movie-actions">
-                <button class="icon-btn view">
-                    <i class="fa-solid fa-eye"></i>
-                </button>
-                <button class="icon-btn add"><i class="fa-solid fa-plus"></i></button>
-                <button class="icon-btn delete">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-            </div>
-        `;
+/* =========================
+   HEADER
+========================= */
+header {
+    background-color: black;
+    background-image: url('images/books-v-movies.jpg');
+    background-size: cover;         
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 500px;
 
-        // View Button Logic for Movies
-        li.querySelector(".view").addEventListener("click", () => {
-            const choice = prompt("Update Status for '" + title + "':\n1. To Watch(Enter 1)\n2. In the middle of watching(Enter 2)\n3. Completed watching(Enter 3)");
-            const label = li.querySelector(".status-label");
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
 
-            if (choice === "1") {
-                label.textContent = "• To Watch";
-                label.style.color = "#f1c40f";
-            } else if (choice === "2") {
-                label.textContent = "• Watching";
-                label.style.color = "#3498db";
-            } else if (choice === "3") {
-                label.textContent = "• Completed";
-                label.style.color = "#2ecc71";
-            }
-        });
+/* =========================
+   NAVIGATION
+========================= */
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: white;
+    height: 60px;
 
-        li.querySelector(".delete").addEventListener("click", () => li.remove());
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
 
-        li.querySelector(".icon-btn.add").addEventListener("click", function() {
-            if (isDuplicate(movieCollection, title)) {
-                alert(`${title} is already in your collection!`);
-                return;
-            }
-            const collectionItem = createMovieItem(title, meta);
-            collectionItem.querySelector(".icon-btn.add").remove();
-            movieCollection.appendChild(collectionItem);
-        });
+li {
+    margin-right: 20px;
+}
 
-        return li;
+li a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+}
+
+/* =========================
+   INTRO TITLE
+========================= */
+h1.intro {
+    background-color: white;
+    color: black;
+    font-size: 40px;
+    text-align: center;
+    padding: 30px 0;
+    margin: 0;
+}
+
+/* =========================
+   WELCOMING PARAGRAPH
+========================= */
+p.Welcoming {
+    background-color: white;
+    color: black;
+    font-size: 20px;
+    text-align: center;
+    padding: 40px;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+section {
+    color: black;
+    padding: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 40px;
+}
+
+/* Latest Movies Section */
+section.LatestMovies div {
+    color: black;
+    margin: auto;
+}
+
+/* User List Section */
+section.UserList div {
+    color: red;
+    margin: auto;
+}
+
+/* Book description text */
+section.featherbox_Books p {
+    color: black;
+    max-width: 500px;
+    align-self: center;
+}
+
+/* =========================
+   FOOTER
+========================= */
+footer {
+    background-color: black;
+    padding: 40px;
+    color: white;
+    text-align: center;
+}
+
+.add-button {
+    background-color: #111;              /* dark sleek base */
+    color: white;
+    font-family: 'Story Script', 'Oswald', sans-serif;
+    font-size: 16px;
+
+    padding: 12px 24px;
+    border: none;
+    border-radius: 30px;                 /* rounded pill shape */
+
+    cursor: pointer;
+    transition: all 0.3s ease;           /* smooth animation */
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover effect */
+.add-button:hover {
+    background-color: #2ecc71;           /* soft green highlight */
+    transform: translateY(-3px);         /* lift effect */
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* Click effect */
+.add-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+/* =========================
+   BOOK LIST SECTION
+========================= */
+.featherbox_Books {
+    display: flex;
+    justify-content: center;
+    padding: 80px 20px;
+    background-color: #f4f4f4;
+}
+
+/* Card container */
+.book-list-card {
+    background-color: white;
+    width: 100%;
+    max-width: 600px;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Section title */
+.list-title {
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 28px;
+    text-align: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Book list */
+.book-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Each book item */
+.book-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    border-bottom: 1px solid #eee;
+    transition: background 0.3s ease;
+}
+
+/* Hover effect */
+.book-list li:hover {
+    background-color: #f9f9f9;
+}
+
+/* Book title */
+.book-title {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+/* Author styling */
+.book-author {
+    font-size: 14px;
+    color: #777;
+}
+
+/* Book list layout */
+.book-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10px;
+    border-bottom: 1px solid #eee;
+    transition: background 0.3s ease;
+}
+
+.book-list li:hover {
+    background-color: #f9f9f9;
+}
+
+/* Left side book info */
+.book-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.book-info i {
+    font-size: 20px;
+    color: #444;
+}
+
+/* Title + author stacked */
+.book-info div {
+    display: flex;
+    flex-direction: column;
+}
+
+.book-title {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.book-author {
+    font-size: 14px;
+    color: #777;
+}
+
+/* Action buttons */
+.book-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+/* Individual icon colors */
+.icon-btn.view:hover {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.icon-btn.add:hover {
+    background-color: #3498db;
+    color: white;
+}
+
+.icon-btn.delete:hover {
+    background-color: #e74c3c;
+    color: white;
+}
+
+/* =========================
+   MOVIE SECTION
+========================= */
+.movie-section {
+    display: flex;
+    justify-content: center;
+    padding: 80px 20px;
+    background-color: #111;   /* darker for cinematic feel */
+}
+
+/* Card container */
+.movie-list-card {
+    background-color: gray;
+    width: 100%;
+    max-width: 700px;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    color: white;
+    align-items: center;
+}
+
+/* Movie list */
+.movie-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Each movie row */
+.movie-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10px;
+    border-bottom: 1px solid #333;
+    transition: background 0.3s ease;
+}
+
+/* Left side */
+.movie-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.movie-info i {
+    font-size: 22px;
+    color: #f1c40f;  /* gold film icon */
+}
+
+.movie-info div {
+    display: flex;
+    flex-direction: column; 
+}
+
+.movie-title {
+    font-weight: 600;
+    font-size: 18px;
+    color: white;
+}
+
+.movie-meta {
+    font-size: 14px;
+    color: white;
+}
+
+/* Actions */
+.movie-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.collection-section {
+    display: flex;
+    justify-content: center;
+    padding: 60px 20px;
+}
+
+.collection-section .book-list-card,
+.collection-section .movie-list-card {
+    width: 100%;
+    max-width: 600px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.collection-section .movie-list-card {
+    background-color: gray;
+    color: white;
+}
+
+.collection-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.collection-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.collection-section li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+.add-book-form,
+.add-movie-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.add-book-form input,
+.add-movie-form input {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.add-book-form button,
+.add-movie-form button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #111;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.add-book-form button:hover,
+.add-movie-form button:hover {
+    background-color: #2ecc71;
+}
+@media (max-width: 600px) {
+    .book-list-card,
+    .movie-list-card {
+        padding: 15px;
     }
 
-    // ===== Add book from input =====
-    document.getElementById("addBookBtn").addEventListener("click", function() {
-        const titleInput = document.getElementById("newBookTitle");
-        const authorInput = document.getElementById("newBookAuthor");
+    .book-list li,
+    .movie-list li {
+        padding: 10px 5px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
 
-        const title = titleInput.value.trim();
-        const author = authorInput.value.trim();
-        if (!title || !author) return alert("Enter both title and author.");
+    .book-actions,
+    .movie-actions {
+        margin-top: 5px;
+        gap: 5px;
+    }
+}
+/* Limit height and allow scrolling */
+.book-list,
+.movie-list {
+    max-height: 400px;       /* adjust based on your design */
+    overflow-y: auto;        /* scroll vertically if too many items */
+    padding-right: 10px;     /* optional, for scrollbar spacing */
+}
 
-        const li = createBookItem(title, author);
-        bookList.appendChild(li);
+/* =========================
+   FIX FOR VERTICAL LISTS
+========================= */
 
-        titleInput.value = "";
-        authorInput.value = "";
-    });
+/* 1. Reset the global 'ul' flex behavior for your book/movie lists */
+.book-list, .movie-list {
+    display: flex !important;
+    flex-direction: column !important; /* Forces vertical stacking */
+    justify-content: flex-start !important; /* Moves items to the top */
+    align-items: stretch !important; /* Makes items fill the width */
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 0;
+    margin: 0;
+    background-color: transparent; /* Removes the white background from global ul */
+    height: auto; /* Overrides the global 60px height */
+}
 
-    // ===== Add movie from input =====
-    document.getElementById("addMovieBtn").addEventListener("click", function() {
-        const titleInput = document.getElementById("newMovieTitle");
-        const metaInput = document.getElementById("newMovieMeta");
+/* 2. Ensure the List Items (li) don't inherit 'margin-right: 20px' from global */
+.book-list li, .movie-list li {
+    margin-right: 0 !important; 
+    width: 100%;
+    display: flex;
+    flex-direction: row; /* Content inside the row stays side-by-side */
+    justify-content: space-between;
+    padding: 15px 10px;
+}
 
-        const title = titleInput.value.trim();
-        const meta = metaInput.value.trim();
-        if (!title || !meta) return alert("Enter both title and year/genre.");
+/* 3. Fix text color for Movie Collection titles (currently black on dark) */
+#collectionMovies .movie-title, 
+#collectionMovies .movie-meta {
+    color: white !important;
+}
+.status-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-top: 4px;
+    display: inline-block;
+    font-weight: bold;
+    text-transform: uppercase;
+}
 
-        const li = createMovieItem(title, meta);
-        movieList.appendChild(li);
+.status-to-read { background: #f1c40f; color: #000; }     /* Yellow */
+.status-reading { background: #3498db; color: #fff; }     /* Blue */
+.status-completed { background: #2ecc71; color: #fff; }   /* Green */
 
-        titleInput.value = "";
-        metaInput.value = "";
-    });
-
-    // ===== Initialize existing items =====
-    // Attach add-to-collection to existing books
-    document.querySelectorAll(".featherbox_Books .book-list li").forEach(li => {
-        const title = li.querySelector(".book-title").textContent;
-        const author = li.querySelector(".book-author").textContent;
-
-        li.querySelector(".icon-btn.add").addEventListener("click", function() {
-            if (isDuplicate(bookCollection, title)) {
-                alert(`${title} is already in your collection!`);
-                return;
-            }
-
-            const collectionItem = createBookItem(title, author);
-            collectionItem.querySelector(".icon-btn.add").remove();
-            bookCollection.appendChild(collectionItem);
-        });
-
-        li.querySelector(".delete").addEventListener("click", () => li.remove());
-    });
-
-    // Attach add-to-collection to existing movies
-    document.querySelectorAll(".movie-section .movie-list li").forEach(li => {
-        const title = li.querySelector(".movie-title").textContent;
-        const meta = li.querySelector(".movie-meta").textContent;
-
-        li.querySelector(".icon-btn.add").addEventListener("click", function() {
-            if (isDuplicate(movieCollection, title)) {
-                alert(`${title} is already in your collection!`);
-                return;
-            }
-
-            const collectionItem = createMovieItem(title, meta);
-            collectionItem.querySelector(".icon-btn.add").remove();
-            movieCollection.appendChild(collectionItem);
-        });
-
-        li.querySelector(".delete").addEventListener("click", () => li.remove());
-    });
-
-});
-</script>
-<body>
-    
-    <header>
-        <h1>My Book and Movie Log</h1>
-    </header>
-    
-    <h1 class="intro">Welcome to My Journey</h1>
-    
-    <p class="Welcoming">The Goal: design and implement a book/movie log interface using HTML,
-            CSS, and JavaScript. At its core, the system manages a list of items and allows users to interact
-            with that list in meaningful ways. You can add a book into your collection, update its status, and remove it when you're done.</p>
-
-    <section class="featherbox_Books">
-        <div class="book-list-card">
-        <h2 class="list-title">BOOKS</h2>
-        <div class="add-book-form">
-              <input type="text" id="newBookTitle" placeholder="Book Title">
-              <input type="text" id="newBookAuthor" placeholder="Author">
-         <button id="addBookBtn">Add Book</button>
-</div>
-        <ul class="book-list">
-            <li>
-                <div class="book-info">
-                    <i class="fa-solid fa-book"></i>
-                    <div>
-                        <span class="book-title">The Great Gatsby</span>
-                        <span class="book-author">F. Scott Fitzgerald</span>
-                    </div>
-                </div>
-
-                <div class="book-actions">
-                    <button class="icon-btn add"><i class="fa-solid fa-plus"></i></button>
-                    <button class="icon-btn delete"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            </li>
-
-            <li>
-                <div class="book-info">
-                    <i class="fa-solid fa-book"></i>
-                    <div>
-                        <span class="book-title">The Hobbit</span>
-                        <span class="book-author">J.R.R. Tolkien</span>
-                    </div>
-                </div>
-
-                <div class="book-actions">
-                    <button class="icon-btn add"><i class="fa-solid fa-plus"></i></button>
-                    <button class="icon-btn delete"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            </li>
-        </ul>
-    </div>
-    </section>
-    <section class="movie-section">
-    <div class="movie-list-card">
-        <h2 class="list-title">MOVIES</h2>
-        <div class="add-movie-form">
-    <input type="text" id="newMovieTitle" placeholder="Movie Title">
-    <input type="text" id="newMovieMeta" placeholder="Year / Genre">
-    <button id="addMovieBtn">Add Movie</button>
-</div>
-        <ul class="movie-list">
-            <li>
-                <div class="movie-info">
-                    <i class="fa-solid fa-film"></i>
-                    <div>
-                        <span class="movie-title">Inception</span>
-                        <span class="movie-meta">2010 • Sci-Fi</span>
-                    </div>
-                </div>
-
-                <div class="movie-actions">
-                    <button class="icon-btn add">
-                        <i class="fa-solid fa-plus"></i>
-                    </button>
-                    <button class="icon-btn delete">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </div>
-            </li>
-
-            <li>
-                <div class="movie-info">
-                    <i class="fa-solid fa-film"></i>
-                    <div>
-                        <span class="movie-title">Interstellar</span>
-                        <span class="movie-meta">2014 • Adventure</span>
-                    </div>
-                </div>
-
-                <div class="movie-actions">
-                    <button class="icon-btn add">
-                        <i class="fa-solid fa-plus"></i>
-                    </button>
-                    <button class="icon-btn delete">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </div>
-            </li>
-        </ul>
-    </div>
-</section>
-<section class="collection-section">
-    <div class="book-list-card">
-        <h2 class="list-title">My Book Collection</h2>
-        <ul class="book-list" id="collectionBooks"></ul>
-    </div>
-</section>
-
-<section class="collection-section">
-    <div class="movie-list-card">
-        <h2 class="list-title">My Movie Collection</h2>
-        <ul class="movie-list" id="collectionMovies"></ul>
-    </div>
-</section>
-    
-    <footer>
-        <p>&copy; 2023 MovieLog. All rights reserved for Darren.</p>
-    </footer>
-</body>
-</html>
