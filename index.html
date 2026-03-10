@@ -33,41 +33,48 @@ document.addEventListener("DOMContentLoaded", function () {
         const li = document.createElement("li");
         li.innerHTML = `
             <div class="book-info">
-                <i class="fa-solid fa-book"></i>
-                <div>
-                    <span class="book-title">${title}</span>
-                    <span class="book-author">${author}</span>
-                </div>
+            <i class="fa-solid fa-book"></i>
+            <div>
+                <span class="book-title">${title}</span>
+                <span class="book-author">${author}</span>
+                <span class="status-label"></span>
             </div>
-            <div class="book-actions">
-                <button class="icon-btn view">
-                    <i class="fa-solid fa-eye"></i>
-                </button>
-                <button class="icon-btn add"><i class="fa-solid fa-plus"></i></button>
-                <button class="icon-btn delete">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-            </div>
+        </div>
+        <div class="book-actions">
+            <button class="icon-btn add"><i class="fa-solid fa-plus"></i></button>
+            <button class="icon-btn delete"><i class="fa-solid fa-trash"></i></button>
+        </div>
         `;
+    li.querySelector(".delete").addEventListener("click", () => li.remove());
 
-        // Delete button
-        li.querySelector(".delete").addEventListener("click", () => li.remove());
+    li.querySelector(".icon-btn.add").addEventListener("click", function() {
+        if (isDuplicate(bookCollection, title)) {
+            alert(`${title} is already in your collection!`);
+            return;
+        }
 
-        // Add to collection button
-        li.querySelector(".icon-btn.add").addEventListener("click", function() {
-            if (isDuplicate(bookCollection, title)) {
-                alert(`${title} is already in your collection!`);
-                return;
-            }
+        const collectionItem = createBookItem(title, author);
+        collectionItem.querySelector(".icon-btn.add").remove();
 
-            const collectionItem = createBookItem(title, author);
-            // Remove the add button in collection
-            collectionItem.querySelector(".icon-btn.add").remove();
-            bookCollection.appendChild(collectionItem);
+        // --- ADD VIEW BUTTON BACK ONLY FOR COLLECTION ---
+        const viewBtn = document.createElement("button");
+        viewBtn.className = "icon-btn view";
+        viewBtn.innerHTML = '<i class="fa-solid fa-eye"></i>';
+        
+        viewBtn.addEventListener("click", () => {
+            const choice = prompt("Update Status:\n1. To Read\n2. Reading\n3. Completed");
+            const label = collectionItem.querySelector(".status-label");
+            if (choice === "1") { label.textContent = "• To Read"; label.style.color = "#f1c40f"; }
+            else if (choice === "2") { label.textContent = "• Reading"; label.style.color = "#3498db"; }
+            else if (choice === "3") { label.textContent = "• Completed"; label.style.color = "#2ecc71"; }
         });
 
-        return li;
-    }
+        collectionItem.querySelector(".book-actions").prepend(viewBtn);
+        bookCollection.appendChild(collectionItem);
+    });
+
+    return li;
+}
 
     // ===== Function to create a movie list item =====
     function createMovieItem(title, meta) {
@@ -78,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div>
                     <span class="movie-title">${title}</span>
                     <span class="movie-meta">${meta}</span>
-                </div>
+                    <span class="status-label"></span> </div>
             </div>
             <div class="movie-actions">
                 <button class="icon-btn view">
@@ -91,18 +98,31 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
         `;
 
-        // Delete button
+        // View Button Logic for Movies
+        li.querySelector(".view").addEventListener("click", () => {
+            const choice = prompt("Update Status for '" + title + "':\n1. To Watch(Enter 1)\n2. In the middle of watching(Enter 2)\n3. Completed watching(Enter 3)");
+            const label = li.querySelector(".status-label");
+
+            if (choice === "1") {
+                label.textContent = "• To Watch";
+                label.style.color = "#f1c40f";
+            } else if (choice === "2") {
+                label.textContent = "• Watching";
+                label.style.color = "#3498db";
+            } else if (choice === "3") {
+                label.textContent = "• Completed";
+                label.style.color = "#2ecc71";
+            }
+        });
+
         li.querySelector(".delete").addEventListener("click", () => li.remove());
 
-        // Add to collection button
         li.querySelector(".icon-btn.add").addEventListener("click", function() {
             if (isDuplicate(movieCollection, title)) {
                 alert(`${title} is already in your collection!`);
                 return;
             }
-
             const collectionItem = createMovieItem(title, meta);
-            // Remove add button in collection
             collectionItem.querySelector(".icon-btn.add").remove();
             movieCollection.appendChild(collectionItem);
         });
@@ -197,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
     <section class="featherbox_Books">
         <div class="book-list-card">
-        <h2 class="list-title">Currently Reading</h2>
+        <h2 class="list-title">BOOKS</h2>
         <div class="add-book-form">
               <input type="text" id="newBookTitle" placeholder="Book Title">
               <input type="text" id="newBookAuthor" placeholder="Author">
@@ -214,9 +234,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
 
                 <div class="book-actions">
-                        <button class="icon-btn view">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
                     <button class="icon-btn add"><i class="fa-solid fa-plus"></i></button>
                     <button class="icon-btn delete"><i class="fa-solid fa-trash"></i></button>
                 </div>
@@ -232,9 +249,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
 
                 <div class="book-actions">
-                    <button class="icon-btn view">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
                     <button class="icon-btn add"><i class="fa-solid fa-plus"></i></button>
                     <button class="icon-btn delete"><i class="fa-solid fa-trash"></i></button>
                 </div>
@@ -244,7 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
     </section>
     <section class="movie-section">
     <div class="movie-list-card">
-        <h2 class="list-title">My Watchlist</h2>
+        <h2 class="list-title">MOVIES</h2>
         <div class="add-movie-form">
     <input type="text" id="newMovieTitle" placeholder="Movie Title">
     <input type="text" id="newMovieMeta" placeholder="Year / Genre">
@@ -261,9 +275,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
 
                 <div class="movie-actions">
-                    <button class="icon-btn view">
-                        <i class="fa-solid fa-eye"></i>
-                    </button>
                     <button class="icon-btn add">
                         <i class="fa-solid fa-plus"></i>
                     </button>
@@ -283,9 +294,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
 
                 <div class="movie-actions">
-                    <button class="icon-btn view">
-                        <i class="fa-solid fa-eye"></i>
-                    </button>
                     <button class="icon-btn add">
                         <i class="fa-solid fa-plus"></i>
                     </button>
@@ -311,6 +319,8 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
 </section>
     
-    <footer>footer</footer>
+    <footer>
+        <p>&copy; 2023 MovieLog. All rights reserved for Darren.</p>
+    </footer>
 </body>
 </html>
